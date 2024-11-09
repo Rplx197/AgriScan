@@ -1,4 +1,4 @@
-package com.example.agriscan
+package com.example.agriscan.data
 
 data class MenuItem(
     val name: String,

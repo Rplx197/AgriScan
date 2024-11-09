@@ -1,12 +1,20 @@
-package com.example.agriscan
+package com.example.agriscan.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.agriscan.data.MenuItem
+import com.example.agriscan.R
 import com.example.agriscan.databinding.ItemMenuBinding
 
-class MenuAdapter(private val menuList: List<MenuItem>) :
-    RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {
+class MenuAdapter(
+    private val menuList: List<MenuItem>,
+    private val onMenuItemClickListener: OnMenuItemClickListener
+) : RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {
+
+    interface OnMenuItemClickListener {
+        fun onMenuItemClick(menuItem: MenuItem)
+    }
 
     inner class MenuViewHolder(private val binding: ItemMenuBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -15,6 +23,10 @@ class MenuAdapter(private val menuList: List<MenuItem>) :
             binding.tvMenuName.text = menuItem.name
             binding.ivMenuIcon.setImageResource(menuItem.icon)
             binding.cvMenuItem.setBackgroundResource(R.drawable.bg_menu)
+
+            binding.root.setOnClickListener {
+                onMenuItemClickListener.onMenuItemClick(menuItem)
+            }
         }
     }
 

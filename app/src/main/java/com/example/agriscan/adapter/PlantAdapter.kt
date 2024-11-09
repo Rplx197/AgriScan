@@ -1,10 +1,12 @@
-package com.example.agriscan
+package com.example.agriscan.adapter
 
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.agriscan.data.PlantItem
+import com.example.agriscan.ScanActivity
 import com.example.agriscan.databinding.ItemPlantBinding
 
 class PlantAdapter(private val context: Context, private val plantList: List<PlantItem>) :

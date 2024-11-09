@@ -1,4 +1,4 @@
-package com.example.agriscan
+package com.example.agriscan.data
 
 data class PlantItem(
     val name: String,

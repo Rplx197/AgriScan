@@ -13,8 +13,6 @@
     <string name="already_have_an_account">Already have an account?</string>
     <string name="sign_in">Sign In</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="first_name">First Name</string>
-    <string name="last_name">Last Name</string>
     <string name="plant_name">Plant Name</string>
     <string name="plant_icon">Plant Icon</string>
     <string name="scan">Scan</string>
@@ -28,4 +26,7 @@
     <string name="confidence">Confidence :</string>
     <string name="_60">60 %</string>
     <string name="simpan_history">Simpan history</string>
+    <string name="name">Name</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="setting">Setting</string>
 </resources>

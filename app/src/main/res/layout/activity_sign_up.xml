@@ -33,7 +33,7 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/tvSignUp"
+            android:id="@+id/tvSignIn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -51,21 +51,6 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="32dp">
-
-        <EditText
-            android:id="@+id/etFirstName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:autofillHints="name"
-            android:drawableStart="@drawable/ic_person"
-            android:drawablePadding="12dp"
-            android:drawableTint="@color/primary"
-            android:hint="@string/first_name"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:textColor="@color/black"
-            android:textColorHint="@android:color/tertiary_text_dark" />
 
         <EditText
             android:id="@+id/etEmail"
