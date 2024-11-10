@@ -15,17 +15,14 @@ class SettingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialize ViewBinding
         binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Observe the theme LiveData
         viewModel.isDarkModeLiveData.observe(this) { isDarkMode ->
             binding.switchTheme.isChecked = isDarkMode
             applyTheme(isDarkMode)
         }
 
-        // Toggle theme when switch is clicked
         binding.switchTheme.setOnCheckedChangeListener { _, isChecked ->
             viewModel.toggleTheme(isChecked)
         }
