@@ -1,4 +1,4 @@
-package com.example.agriscan
+package com.example.agriscan.ui.auth
 
 import android.content.Context
 import android.content.Intent
@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.agriscan.databinding.ActivitySignInBinding
+import com.example.agriscan.ui.main.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class SignInActivity : AppCompatActivity() {

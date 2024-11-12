@@ -1,4 +1,4 @@
-package com.example.agriscan
+package com.example.agriscan.ui.auth
 
 import android.content.Intent
 import android.os.Bundle

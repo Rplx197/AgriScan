@@ -1,4 +1,4 @@
-package com.example.agriscan
+package com.example.agriscan.ui.setting
 
 import android.os.Bundle
 import androidx.activity.viewModels

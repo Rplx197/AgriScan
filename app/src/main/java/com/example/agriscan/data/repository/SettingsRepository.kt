@@ -1,4 +1,4 @@
-package com.example.agriscan
+package com.example.agriscan.data.repository
 
 import android.content.Context
 import android.content.SharedPreferences

@@ -1,4 +1,4 @@
-package com.example.agriscan
+package com.example.agriscan.ui.main
 
 import android.content.Context
 import android.content.Intent
@@ -6,11 +6,15 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.agriscan.R
+import com.example.agriscan.ui.setting.SettingActivity
+import com.example.agriscan.ui.auth.SignInActivity
 import com.example.agriscan.adapter.MenuAdapter
 import com.example.agriscan.adapter.PlantAdapter
-import com.example.agriscan.data.MenuItem
-import com.example.agriscan.data.PlantItem
+import com.example.agriscan.data.model.MenuItem
+import com.example.agriscan.data.model.PlantItem
 import com.example.agriscan.databinding.ActivityMainBinding
+import com.example.agriscan.ui.history.HistoryActivity
 import com.google.firebase.auth.FirebaseAuth
 import java.util.Calendar
 
