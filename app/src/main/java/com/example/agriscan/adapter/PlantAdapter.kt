@@ -4,10 +4,10 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
+import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.agriscan.R
 import com.example.agriscan.data.model.PlantItem
 import com.example.agriscan.ui.scan.ScanActivity
 import com.example.agriscan.databinding.ItemPlantBinding
@@ -26,11 +26,8 @@ class PlantAdapter(private val context: Context, private val plantList: List<Pla
             binding.root.setOnClickListener {
                 val intent = Intent(context, ScanActivity::class.java)
                 intent.putExtra("PLANT_NAME", plantItem.name)
-                context.startActivity(intent)
 
-                if (context is Activity) {
-                    context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-                }
+                context.startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(context as Activity).toBundle())
             }
         }
     }
@@ -42,16 +39,27 @@ class PlantAdapter(private val context: Context, private val plantList: List<Pla
 
     override fun onBindViewHolder(holder: PlantViewHolder, position: Int) {
         holder.bind(plantList[position])
-
-        val animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.item_animation)
-        holder.itemView.startAnimation(animation)
+        applyItemAnimation(holder.itemView)
     }
 
     override fun getItemCount(): Int = plantList.size
 
     override fun onViewAttachedToWindow(holder: PlantViewHolder) {
         super.onViewAttachedToWindow(holder)
-        val animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.item_animation)
-        holder.itemView.startAnimation(animation)
+        applyItemAnimation(holder.itemView)
+    }
+    private fun applyItemAnimation(view: View, duration: Long = 500) {
+        view.alpha = 0f
+        view.translationY = 100f
+        view.scaleX = 0.8f
+        view.scaleY = 0.8f
+
+        view.animate()
+            .alpha(1f)
+            .translationY(0f)
+            .scaleX(1f)
+            .scaleY(1f)
+            .setDuration(duration)
+            .start()
     }
 }

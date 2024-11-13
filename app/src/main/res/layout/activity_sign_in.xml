@@ -38,7 +38,8 @@
         <com.google.android.gms.common.SignInButton
             android:id="@+id/btnSignInGoogle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:alpha="0" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -53,6 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:alpha="0"
             android:autofillHints="emailAddress"
             android:drawableStart="@drawable/ic_email"
             android:drawablePadding="12dp"
@@ -68,6 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
+            android:alpha="0"
             android:drawableStart="@drawable/ic_password"
             android:drawablePadding="12dp"
             android:drawableTint="@color/primary"
@@ -87,6 +90,7 @@
                 android:id="@+id/cbRememberMe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:alpha="0"
                 android:checked="false"
                 android:text="@string/remember_me" />
 
@@ -95,6 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                android:alpha="0"
                 android:text="@string/forgot_password"
                 android:textColor="@color/primary" />
         </FrameLayout>
@@ -104,6 +109,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginBottom="16dp"
+            android:alpha="0"
             android:backgroundTint="@color/primary"
             android:text="@string/log_in"
             android:textColor="@color/white" />
@@ -126,6 +132,7 @@
                 android:id="@+id/tvSignUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:alpha="0"
                 android:gravity="center"
                 android:text="@string/sign_up"
                 android:textColor="@color/primary"

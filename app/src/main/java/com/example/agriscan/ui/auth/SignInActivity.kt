@@ -1,8 +1,11 @@
 package com.example.agriscan.ui.auth
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.agriscan.databinding.ActivitySignInBinding
@@ -22,6 +25,8 @@ class SignInActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
+
+        playAnimation()
 
         val sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         if (sharedPreferences.getBoolean(KEY_REMEMBER_ME, false)) {
@@ -84,5 +89,21 @@ class SignInActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun playAnimation() {
+        val google = ObjectAnimator.ofFloat(binding.btnSignInGoogle, View.ALPHA, 1f).setDuration(200)
+        val email = ObjectAnimator.ofFloat(binding.etEmail, View.ALPHA, 1f).setDuration(200)
+        val password = ObjectAnimator.ofFloat(binding.etPassword, View.ALPHA, 1f).setDuration(200)
+        val rememberMe = ObjectAnimator.ofFloat(binding.cbRememberMe, View.ALPHA, 1f).setDuration(200)
+        val forgotPassword = ObjectAnimator.ofFloat(binding.tvForgotPassword, View.ALPHA, 1f).setDuration(200)
+        val login = ObjectAnimator.ofFloat(binding.btnLogin, View.ALPHA, 1f).setDuration(200)
+        val signUp = ObjectAnimator.ofFloat(binding.tvSignUp, View.ALPHA, 1f).setDuration(200)
+
+
+        AnimatorSet().apply {
+            playSequentially(google, email, password, rememberMe, forgotPassword, login, signUp)
+            start()
+        }
     }
 }

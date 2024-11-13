@@ -1,8 +1,8 @@
 package com.example.agriscan.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agriscan.data.model.MenuItem
 import com.example.agriscan.R
@@ -38,16 +38,28 @@ class MenuAdapter(
 
     override fun onBindViewHolder(holder: MenuViewHolder, position: Int) {
         holder.bind(menuList[position])
-
-        val animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.item_animation)
-        holder.itemView.startAnimation(animation)
+        applyItemAnimation(holder.itemView)
     }
 
     override fun getItemCount(): Int = menuList.size
 
     override fun onViewAttachedToWindow(holder: MenuViewHolder) {
         super.onViewAttachedToWindow(holder)
-        val animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.item_animation)
-        holder.itemView.startAnimation(animation)
+        applyItemAnimation(holder.itemView)
+    }
+
+    private fun applyItemAnimation(view: View, duration: Long = 500) {
+        view.alpha = 0f
+        view.translationY = 100f
+        view.scaleX = 0.8f
+        view.scaleY = 0.8f
+
+        view.animate()
+            .alpha(1f)
+            .translationY(0f)
+            .scaleX(1f)
+            .scaleY(1f)
+            .setDuration(duration)
+            .start()
     }
 }

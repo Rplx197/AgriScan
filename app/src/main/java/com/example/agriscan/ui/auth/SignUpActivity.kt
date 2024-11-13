@@ -1,7 +1,10 @@
 package com.example.agriscan.ui.auth
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.agriscan.databinding.ActivitySignUpBinding
@@ -17,6 +20,8 @@ class SignUpActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
+
+        playAnimation()
 
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
@@ -62,6 +67,20 @@ class SignUpActivity : AppCompatActivity() {
             val intent = Intent(this@SignUpActivity, SignInActivity::class.java)
             startActivity(intent)
             finish()
+        }
+    }
+
+    private fun playAnimation() {
+        val email = ObjectAnimator.ofFloat(binding.etEmail, View.ALPHA, 1f).setDuration(200)
+        val password = ObjectAnimator.ofFloat(binding.etPassword, View.ALPHA, 1f).setDuration(200)
+        val confirmPassword = ObjectAnimator.ofFloat(binding.etConfirmPassword, View.ALPHA, 1f).setDuration(200)
+        val login = ObjectAnimator.ofFloat(binding.btnLogin, View.ALPHA, 1f).setDuration(200)
+        val signIn = ObjectAnimator.ofFloat(binding.tvSignIn, View.ALPHA, 1f).setDuration(200)
+        val google = ObjectAnimator.ofFloat(binding.btnSignInGoogle, View.ALPHA, 1f).setDuration(200)
+
+        AnimatorSet().apply {
+            playSequentially(email, password, confirmPassword, login, signIn, google)
+            start()
         }
     }
 }

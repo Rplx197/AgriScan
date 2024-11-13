@@ -1,11 +1,14 @@
 package com.example.agriscan.ui.scan
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -43,6 +46,8 @@ class ScanActivity : AppCompatActivity() {
         binding = ActivityScanBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        playAnimation()
+
         val plantName = intent.getStringExtra("PLANT_NAME")
         binding.tvPredictionTitle.text = getString(R.string.prediksi, plantName)
 
@@ -54,12 +59,6 @@ class ScanActivity : AppCompatActivity() {
             saveToHistory()
         }
     }
-
-    override fun finish() {
-        super.finish()
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
-    }
-
 
     // Open file chooser using the registered activity result launcher
     private fun openFileChooser() {
@@ -87,5 +86,19 @@ class ScanActivity : AppCompatActivity() {
 
     private fun saveToHistory() {
         Toast.makeText(this, "History saved!", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun playAnimation() {
+        val title = ObjectAnimator.ofFloat(binding.tvPredictionTitle, View.ALPHA, 1f).setDuration(200)
+        val image = ObjectAnimator.ofFloat(binding.ivPrediction, View.ALPHA, 1f).setDuration(200)
+        val result = ObjectAnimator.ofFloat(binding.tvPredictionResult, View.ALPHA, 1f).setDuration(200)
+        val confidence = ObjectAnimator.ofFloat(binding.tvPredictionConfidence, View.ALPHA, 1f).setDuration(200)
+        val button = ObjectAnimator.ofFloat(binding.btnPredict, View.ALPHA, 1f).setDuration(200)
+        val save = ObjectAnimator.ofFloat(binding.btnSaveHistory, View.ALPHA, 1f).setDuration(200)
+
+        AnimatorSet().apply {
+            playSequentially(title, image, result, confidence, button, save)
+            start()
+        }
     }
 }
