@@ -84,7 +84,7 @@ class SignInActivity : AppCompatActivity() {
             finish()
         }
     }
-    
+
     private fun goToMainActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
@@ -92,7 +92,6 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun playAnimation() {
-        val google = ObjectAnimator.ofFloat(binding.btnSignInGoogle, View.ALPHA, 1f).setDuration(200)
         val email = ObjectAnimator.ofFloat(binding.etEmail, View.ALPHA, 1f).setDuration(200)
         val password = ObjectAnimator.ofFloat(binding.etPassword, View.ALPHA, 1f).setDuration(200)
         val rememberMe = ObjectAnimator.ofFloat(binding.cbRememberMe, View.ALPHA, 1f).setDuration(200)
@@ -102,7 +101,7 @@ class SignInActivity : AppCompatActivity() {
 
 
         AnimatorSet().apply {
-            playSequentially(google, email, password, rememberMe, forgotPassword, login, signUp)
+            playSequentially( email, password, rememberMe, forgotPassword, login, signUp)
             start()
         }
     }

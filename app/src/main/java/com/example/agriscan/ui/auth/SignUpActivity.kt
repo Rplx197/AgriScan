@@ -76,10 +76,9 @@ class SignUpActivity : AppCompatActivity() {
         val confirmPassword = ObjectAnimator.ofFloat(binding.etConfirmPassword, View.ALPHA, 1f).setDuration(200)
         val login = ObjectAnimator.ofFloat(binding.btnLogin, View.ALPHA, 1f).setDuration(200)
         val signIn = ObjectAnimator.ofFloat(binding.tvSignIn, View.ALPHA, 1f).setDuration(200)
-        val google = ObjectAnimator.ofFloat(binding.btnSignInGoogle, View.ALPHA, 1f).setDuration(200)
 
         AnimatorSet().apply {
-            playSequentially(email, password, confirmPassword, login, signIn, google)
+            playSequentially(email, password, confirmPassword, login, signIn)
             start()
         }
     }
