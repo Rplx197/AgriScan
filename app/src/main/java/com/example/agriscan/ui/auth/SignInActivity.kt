@@ -5,9 +5,12 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.marginStart
 import com.example.agriscan.databinding.ActivitySignInBinding
 import com.example.agriscan.ui.main.MainActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -78,6 +81,10 @@ class SignInActivity : AppCompatActivity() {
             }
         }
 
+        binding.tvForgotPassword.setOnClickListener {
+            showForgotPasswordDialog()
+        }
+
         binding.tvSignUp.setOnClickListener {
             val intent = Intent(this@SignInActivity, SignUpActivity::class.java)
             startActivity(intent)
@@ -105,4 +112,62 @@ class SignInActivity : AppCompatActivity() {
             start()
         }
     }
+
+    private fun showForgotPasswordDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Reset Password")
+        builder.setMessage("Masukkan email Anda untuk menerima tautan reset password.")
+
+        val input = android.widget.EditText(this)
+        input.hint = "Email"
+        input.inputType = android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+
+        builder.setView(input)
+
+        builder.setPositiveButton("Kirim") { _, _ ->
+            val email = input.text.toString().trim()
+
+            if (email.isEmpty()) {
+                Toast.makeText(this, "Email tidak boleh kosong.", Toast.LENGTH_SHORT).show()
+                return@setPositiveButton
+            }
+
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Toast.makeText(this, "Format email tidak valid.", Toast.LENGTH_SHORT).show()
+                return@setPositiveButton
+            }
+
+            sendResetPasswordEmail(email)
+        }
+
+        builder.setNegativeButton("Batal") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        builder.show()
+    }
+
+    private fun sendResetPasswordEmail(email: String) {
+        auth.fetchSignInMethodsForEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val signInMethods = task.result?.signInMethods
+                    if (signInMethods.isNullOrEmpty()) {
+                        Toast.makeText(this, "Email tidak terdaftar di sistem kami.", Toast.LENGTH_LONG).show()
+                    } else {
+                        auth.sendPasswordResetEmail(email)
+                            .addOnCompleteListener { resetTask ->
+                                if (resetTask.isSuccessful) {
+                                    Toast.makeText(this, "Tautan reset password telah dikirim ke email.", Toast.LENGTH_LONG).show()
+                                } else {
+                                    Toast.makeText(this, "Gagal mengirim tautan reset password.", Toast.LENGTH_LONG).show()
+                                }
+                            }
+                    }
+                } else {
+                    Toast.makeText(this, "Terjadi kesalahan. Coba lagi nanti.", Toast.LENGTH_LONG).show()
+                }
+            }
+    }
+
 }
