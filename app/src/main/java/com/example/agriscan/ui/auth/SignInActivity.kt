@@ -10,7 +10,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.marginStart
 import com.example.agriscan.databinding.ActivitySignInBinding
 import com.example.agriscan.ui.main.MainActivity
 import com.google.firebase.auth.FirebaseAuth

@@ -32,7 +32,10 @@ class MainActivity : AppCompatActivity(), MenuAdapter.OnMenuItemClickListener {
         val isDarkMode = sharedPreferences.getBoolean("isDarkMode", false)
 
         AppCompatDelegate.setDefaultNightMode(
-            if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+            if (isDarkMode)
+                AppCompatDelegate.MODE_NIGHT_YES
+            else
+                AppCompatDelegate.MODE_NIGHT_NO
         )
 
         setGreetingMessage()
