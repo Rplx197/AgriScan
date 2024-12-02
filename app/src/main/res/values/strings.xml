@@ -31,4 +31,6 @@
     <string name="setting">Setting</string>
     <string name="btn_prediksi">Prediksi</string>
     <string name="logo_agriscan">Logo AgriScan</string>
+    <string name="kamera">Kamera</string>
+    <string name="galeri">Galeri</string>
 </resources>

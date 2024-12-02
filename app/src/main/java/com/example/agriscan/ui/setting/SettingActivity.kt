@@ -1,10 +1,13 @@
 package com.example.agriscan.ui.setting
 
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Base64
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.agriscan.databinding.ActivitySettingBinding
+import java.io.ByteArrayOutputStream
 
 class SettingActivity : AppCompatActivity() {
 
@@ -26,6 +29,7 @@ class SettingActivity : AppCompatActivity() {
         binding.switchTheme.setOnCheckedChangeListener { _, isChecked ->
             viewModel.toggleTheme(isChecked)
         }
+
     }
 
     private fun applyTheme(isDarkMode: Boolean) {
