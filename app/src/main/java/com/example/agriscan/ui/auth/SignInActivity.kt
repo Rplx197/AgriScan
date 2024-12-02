@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.widget.Toast
@@ -61,7 +62,10 @@ class SignInActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            showLoading(true)
+
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+                showLoading(false)
                 if (task.isSuccessful) {
                     if (binding.cbRememberMe.isChecked) {
                         sharedPreferences.edit()
@@ -147,13 +151,20 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun sendResetPasswordEmail(email: String) {
+        showLoading(true)
+
         auth.fetchSignInMethodsForEmail(email)
             .addOnCompleteListener { task ->
+                showLoading(false)
                 if (task.isSuccessful) {
                     val signInMethods = task.result?.signInMethods
                     if (signInMethods.isNullOrEmpty()) {
                         Toast.makeText(this, "Email tidak terdaftar di sistem kami.", Toast.LENGTH_LONG).show()
                     } else {
+                        // Log daftar metode autentikasi yang ditemukan
+                        signInMethods.forEach {
+                            Log.d("AuthMethod", "Metode autentikasi: $it")
+                        }
                         auth.sendPasswordResetEmail(email)
                             .addOnCompleteListener { resetTask ->
                                 if (resetTask.isSuccessful) {
@@ -168,5 +179,17 @@ class SignInActivity : AppCompatActivity() {
                 }
             }
     }
+
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.etEmail.isEnabled = !isLoading
+        binding.etPassword.isEnabled = !isLoading
+        binding.btnLogin.isEnabled = !isLoading
+        binding.tvForgotPassword.isEnabled = !isLoading
+        binding.tvSignUp.isEnabled = !isLoading
+        binding.cbRememberMe.isEnabled = !isLoading
+    }
+
 
 }
