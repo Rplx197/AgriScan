@@ -2,14 +2,16 @@ package com.example.agriscan.ui.scan
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.agriscan.R
 import com.example.agriscan.Utils
 import com.example.agriscan.Utils.reduceFileImage
@@ -24,6 +26,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.util.Locale
 
 class ScanActivity : AppCompatActivity() {
 
@@ -45,7 +48,7 @@ class ScanActivity : AppCompatActivity() {
     private fun setupListeners() {
         binding.btnGallery.setOnClickListener { chooseImageFromGallery() }
         binding.btnSaveHistory.setOnClickListener { saveToHistory() }
-        binding.btnCamera.setOnClickListener { chooseImageFromCamera() }
+        binding.btnCamera.setOnClickListener { checkCameraPermissionAndLaunch() }
     }
 
     private fun chooseImageFromGallery() {
@@ -54,8 +57,11 @@ class ScanActivity : AppCompatActivity() {
 
     private fun chooseImageFromCamera() {
         currentImageUri = Utils.getImageUri(this)
-        currentImageUri?.let { cameraLauncher.launch(it) }
-            ?: Toast.makeText(this, "Failed to initialize camera", Toast.LENGTH_SHORT).show()
+        currentImageUri?.let { uri ->
+            cameraLauncher.launch(uri)
+        } ?: run {
+            Toast.makeText(this, "Gagal mengambil gambar", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun saveToHistory() {
@@ -69,7 +75,7 @@ class ScanActivity : AppCompatActivity() {
             currentImageUri = uri
             showSelectedImage()
         } else {
-            Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Tidak ada gambar yang dipilih", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -80,7 +86,30 @@ class ScanActivity : AppCompatActivity() {
             showSelectedImage()
         } else {
             currentImageUri = null
-            Toast.makeText(this, "Camera capture failed", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Pengambilan gambar dibatalkan", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun checkCameraPermissionAndLaunch() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE)
+        } else {
+            chooseImageFromCamera()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == CAMERA_PERMISSION_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                chooseImageFromCamera()
+            } else {
+                Toast.makeText(this, "Permission kamera ditolak", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -88,8 +117,12 @@ class ScanActivity : AppCompatActivity() {
         currentImageUri?.let {
             binding.ivPrediction.setImageURI(it)
             val imageFile = uriToFile(it, this)
-            uploadImageToServer(imageFile)
-        } ?: Log.d("ScanActivity", "No image to show")
+            if (imageFile.exists() && imageFile.length() > 0) {
+                uploadImageToServer(imageFile)
+            } else {
+                Toast.makeText(this, "Gambar tidak valid", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun uploadImageToServer(imageFile: File) {
@@ -107,23 +140,23 @@ class ScanActivity : AppCompatActivity() {
                     val result = response.body()?.top_predictions?.firstOrNull()
                     if (result != null) {
                         binding.tvPredictionResult.text = result.label
-                        binding.tvPredictionConfidence.text = String.format("%.2f%%", result.confidence * 100)
-                        Toast.makeText(this@ScanActivity, "Upload Successful!", Toast.LENGTH_SHORT).show()
+                        binding.tvPredictionConfidence.text = String.format(
+                            Locale.US, "%.2f%%", result.confidence * 100
+                        )
+                        Toast.makeText(this@ScanActivity, "Upload Berhasil!", Toast.LENGTH_SHORT).show()
                     } else {
-                        binding.tvPredictionResult.text = "No result"
+                        binding.tvPredictionResult.text = getString(R.string.no_result)
                         binding.tvPredictionConfidence.text = ""
-                        Toast.makeText(this@ScanActivity, "No predictions found", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@ScanActivity, "Tidak ada prediksi yang ditemukan", Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    Log.e("Upload Error", response.errorBody()?.string() ?: "Unknown error")
-                    Toast.makeText(this@ScanActivity, "Upload failed: ${response.message()}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ScanActivity, "Upload gagal: ${response.message()}", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<ImageUploadResponse>, t: Throwable) {
                 showLoading(false)
 
-                Log.e("Upload Failure", t.message ?: "Unknown error")
                 Toast.makeText(this@ScanActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
@@ -149,5 +182,9 @@ class ScanActivity : AppCompatActivity() {
             playSequentially(title, image, result, confidence, camera, gallery, save)
             start()
         }
+    }
+
+    companion object {
+        private const val CAMERA_PERMISSION_CODE = 101
     }
 }
