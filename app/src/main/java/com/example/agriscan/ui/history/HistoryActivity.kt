@@ -1,8 +1,10 @@
 package com.example.agriscan.ui.history
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agriscan.adapter.HistoryAdapter
@@ -25,6 +27,7 @@ class HistoryActivity : AppCompatActivity() {
         db = AppDatabase.getInstance(this)
 
         setupRecyclerView()
+        updateIconTintBasedOnTheme()
         loadHistoryData()
     }
 
@@ -35,10 +38,19 @@ class HistoryActivity : AppCompatActivity() {
     private fun loadHistoryData() {
         lifecycleScope.launch {
             val historyList = db.historyDao().getAll()
-            adapter = HistoryAdapter(historyList) { history ->
-                deleteHistory(history)
+
+            if (historyList.isEmpty()) {
+                binding.layoutEmptyHistory.visibility = View.VISIBLE
+                binding.rvHistory.visibility = View.GONE
+            } else {
+                binding.layoutEmptyHistory.visibility = View.GONE
+                binding.rvHistory.visibility = View.VISIBLE
+
+                adapter = HistoryAdapter(historyList) { history ->
+                    deleteHistory(history)
+                }
+                binding.rvHistory.adapter = adapter
             }
-            binding.rvHistory.adapter = adapter
         }
     }
 
@@ -46,8 +58,18 @@ class HistoryActivity : AppCompatActivity() {
         lifecycleScope.launch {
             db.historyDao().delete(history)
             Toast.makeText(this@HistoryActivity, "History deleted!", Toast.LENGTH_SHORT).show()
-            loadHistoryData() // Refresh data
+            loadHistoryData()
         }
     }
+
+    private fun updateIconTintBasedOnTheme() {
+        val nightModeFlags = resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK
+        val tintColor = when (nightModeFlags) {
+            android.content.res.Configuration.UI_MODE_NIGHT_YES -> ContextCompat.getColor(this, android.R.color.white)
+            else -> ContextCompat.getColor(this, android.R.color.black)
+        }
+        binding.ivEmptyIcon.setColorFilter(tintColor)
+    }
+
 }
 

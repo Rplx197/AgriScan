@@ -37,4 +37,6 @@
     <string name="tanggal">Tanggal</string>
     <string name="history_image">History Image</string>
     <string name="delete">Hapus</string>
+    <string name="no_history_available">Belum ada history yang disimpan..</string>
+    <string name="empty_icon">Empty Icon</string>
 </resources>
