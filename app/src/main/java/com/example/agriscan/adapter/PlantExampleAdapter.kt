@@ -1,13 +1,9 @@
 package com.example.agriscan.adapter
 
-import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.example.agriscan.R
 import com.example.agriscan.data.model.PlantExampleItem
 import com.example.agriscan.databinding.ItemPlantExampleBinding
 
