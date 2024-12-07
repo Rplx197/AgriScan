@@ -89,6 +89,6 @@ class MainActivity : AppCompatActivity(), MenuAdapter.OnMenuItemClickListener {
             else -> "Selamat Malam"
         }
 
-        binding.tvGreeting.text = "$greeting, \n $displayEmail!"
+        binding.tvGreeting.text = getString(R.string.greeting_message, greeting, displayEmail)
     }
 }

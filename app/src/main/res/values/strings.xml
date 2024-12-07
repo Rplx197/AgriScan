@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">AgriScan</string>
+    <string name="greeting_message">%1$s, \n %2$s!</string>
     <string name="sign_in_to_your_account">Sign in ke \Akun Anda</string>
     <string name="enter_your_email_and_password_to_log_in">Masukkan email dan kata sandi untuk masuk</string>
-    <string name="or_login_with">Atau masuk dengan</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="remember_me">Ingat Saya</string>
@@ -26,12 +26,15 @@
     <string name="confidence">Confidence :</string>
     <string name="confidence_placeholder">Nilai confidence akan tampil disini</string>
     <string name="simpan_history">Simpan history</string>
-    <string name="name">Name</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="setting">Setting</string>
-    <string name="btn_prediksi">Prediksi</string>
     <string name="logo_agriscan">Logo AgriScan</string>
     <string name="kamera">Kamera</string>
     <string name="galeri">Galeri</string>
     <string name="no_result">Tidak ada hasil untuk gambar ini</string>
+    <string name="full_image">Full Image</string>
+    <string name="media">Media</string>
+    <string name="tanggal">Tanggal</string>
+    <string name="history_image">History Image</string>
+    <string name="delete">Hapus</string>
 </resources>

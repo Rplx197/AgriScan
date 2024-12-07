@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.agriscan.R
 import com.example.agriscan.Utils
 import com.example.agriscan.Utils.reduceFileImage
@@ -19,6 +20,9 @@ import com.example.agriscan.Utils.uriToFile
 import com.example.agriscan.databinding.ActivityScanBinding
 import com.example.agriscan.network.ApiConfig
 import com.example.agriscan.network.ImageUploadResponse
+import com.example.agriscan.room.AppDatabase
+import com.example.agriscan.room.History
+import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -65,8 +69,38 @@ class ScanActivity : AppCompatActivity() {
     }
 
     private fun saveToHistory() {
-        Toast.makeText(this, "History saved!", Toast.LENGTH_SHORT).show()
+        currentImageUri?.let { uri ->
+            val filePath = uriToFile(uri, this).absolutePath
+            val condition = binding.tvPredictionResult.text.toString()
+            val confidence = binding.tvPredictionConfidence.text.toString()
+            val media = when {
+                uri.toString().startsWith("content://media/external") -> "Kamera"
+                else -> "Galeri"
+            }
+            val dateTime = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(System.currentTimeMillis())
+            val plant = intent.getStringExtra("PLANT_NAME") ?: "Unknown"
+
+            val history = History(
+                dateTime = dateTime,
+                plant = plant,
+                condition = condition,
+                confidence = confidence,
+                media = media,
+                imagePath = filePath
+            )
+
+            val db = AppDatabase.getInstance(this)
+
+            lifecycleScope.launch {
+                db.historyDao().insert(history)
+                Toast.makeText(this@ScanActivity, "History tersimpan", Toast.LENGTH_SHORT).show()
+            }
+        } ?: run {
+            Toast.makeText(this, "Lakukan prediksi terlebih dahulu", Toast.LENGTH_SHORT).show()
+        }
     }
+
+
 
     private val galleryLauncher = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
