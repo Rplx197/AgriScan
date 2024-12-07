@@ -72,4 +72,3 @@ class HistoryActivity : AppCompatActivity() {
     }
 
 }
-

@@ -66,6 +66,4 @@ class HistoryAdapter(
 
         dialog.show()
     }
-
 }
-

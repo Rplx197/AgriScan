@@ -14,6 +14,7 @@ import com.example.agriscan.adapter.PlantAdapter
 import com.example.agriscan.data.model.MenuItem
 import com.example.agriscan.data.model.PlantItem
 import com.example.agriscan.databinding.ActivityMainBinding
+import com.example.agriscan.ui.example.ExampleActivity
 import com.example.agriscan.ui.history.HistoryActivity
 import com.google.firebase.auth.FirebaseAuth
 import java.util.Calendar
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity(), MenuAdapter.OnMenuItemClickListener {
         )
 
         val menuList = listOf(
+            MenuItem("Example", R.drawable.ic_example),
             MenuItem("History", R.drawable.ic_history),
             MenuItem("Setting", R.drawable.ic_setting),
             MenuItem("Sign Out", R.drawable.ic_sign_out)
@@ -65,6 +67,7 @@ class MainActivity : AppCompatActivity(), MenuAdapter.OnMenuItemClickListener {
 
     override fun onMenuItemClick(menuItem: MenuItem) {
         when (menuItem.name) {
+            "Example" -> startActivity(Intent(this, ExampleActivity::class.java))
             "History" -> startActivity(Intent(this, HistoryActivity::class.java))
             "Setting" -> startActivity(Intent(this, SettingActivity::class.java))
             "Sign Out" -> {
