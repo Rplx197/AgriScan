@@ -43,9 +43,9 @@ class MainActivity : AppCompatActivity(), MenuAdapter.OnMenuItemClickListener {
         setGreetingMessage()
 
         val plantList = listOf(
-            PlantItem("Jagung", R.drawable.bg_corn, R.drawable.corn),
             PlantItem("Tomat", R.drawable.bg_tomato, R.drawable.tomato),
-            PlantItem("Kentang", R.drawable.bg_potato, R.drawable.potato),
+            PlantItem("Jagung", R.drawable.bg_corn, R.drawable.corn),
+            PlantItem("Kentang", R.drawable.bg_potato, R.drawable.potato)
         )
 
         val menuList = listOf(

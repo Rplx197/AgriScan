@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.agriscan.BuildConfig
 import com.example.agriscan.data.model.DiseaseItem
 import com.example.agriscan.databinding.ItemDiseaseBinding
 import com.example.agriscan.databinding.DialogFullImageBinding
@@ -71,7 +72,7 @@ class DiseaseAdapter(
     }
 
     private fun openMarketplaceSearch(keyword: String) {
-        val searchUrl = "https://www.tokopedia.com/search?st=product&q=${Uri.encode(keyword)}"
+        val searchUrl = "${BuildConfig.TOKOPEDIA_URL}search?st=product&q=${Uri.encode(keyword)}"
         val intent = Intent(Intent.ACTION_VIEW).apply {
             data = Uri.parse(searchUrl)
         }

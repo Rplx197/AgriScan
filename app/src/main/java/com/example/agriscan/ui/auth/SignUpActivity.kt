@@ -23,30 +23,34 @@ class SignUpActivity : AppCompatActivity() {
 
         playAnimation()
 
-        binding.btnLogin.setOnClickListener {
+        binding.btnSignUp.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
             val confirmPassword = binding.etConfirmPassword.text.toString().trim()
 
             if (email.isEmpty()) {
-                binding.etEmail.error = "Email is required"
+                binding.etEmail.error = "Email tidak boleh kosong"
                 return@setOnClickListener
             }
             if (password.isEmpty()) {
-                binding.etPassword.error = "Password is required"
+                binding.etPassword.error = "Password tidak boleh kosong"
                 return@setOnClickListener
             }
             if (confirmPassword.isEmpty()) {
-                binding.etConfirmPassword.error = "Confirm Password is required"
+                binding.etConfirmPassword.error = "Confirm Password tidak boleh kosong"
                 return@setOnClickListener
             }
 
             if (password != confirmPassword) {
-                binding.etConfirmPassword.error = "Passwords do not match"
+                binding.etConfirmPassword.error = "Password tidak sama"
                 return@setOnClickListener
             }
 
+            showLoading(true)
+
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+                showLoading(false)
+
                 if (task.isSuccessful) {
                     val intent = Intent(this@SignUpActivity, SignInActivity::class.java)
                     intent.putExtra("email", email)
@@ -55,7 +59,7 @@ class SignUpActivity : AppCompatActivity() {
                     finish()
                 } else {
                     if (task.exception?.message?.contains("The email address is already in use") == true) {
-                        Toast.makeText(this, "User already exists", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "User sudah terdaftar", Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()
                     }
@@ -74,12 +78,21 @@ class SignUpActivity : AppCompatActivity() {
         val email = ObjectAnimator.ofFloat(binding.etEmail, View.ALPHA, 1f).setDuration(200)
         val password = ObjectAnimator.ofFloat(binding.etPassword, View.ALPHA, 1f).setDuration(200)
         val confirmPassword = ObjectAnimator.ofFloat(binding.etConfirmPassword, View.ALPHA, 1f).setDuration(200)
-        val login = ObjectAnimator.ofFloat(binding.btnLogin, View.ALPHA, 1f).setDuration(200)
+        val login = ObjectAnimator.ofFloat(binding.btnSignUp, View.ALPHA, 1f).setDuration(200)
         val signIn = ObjectAnimator.ofFloat(binding.tvSignIn, View.ALPHA, 1f).setDuration(200)
 
         AnimatorSet().apply {
             playSequentially(email, password, confirmPassword, login, signIn)
             start()
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.etEmail.isEnabled = !isLoading
+        binding.etPassword.isEnabled = !isLoading
+        binding.etConfirmPassword.isEnabled = !isLoading
+        binding.btnSignUp.isEnabled = !isLoading
+        binding.tvSignIn.isEnabled = !isLoading
     }
 }
