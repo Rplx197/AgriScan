@@ -2,7 +2,10 @@ package com.example.agriscan.adapter
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agriscan.data.model.DiseaseItem
@@ -32,6 +35,15 @@ class DiseaseAdapter(
         holder.binding.ivDiseaseImage.setOnClickListener {
             showFullImageDialog(disease.imageRes)
         }
+
+        if (disease.searchKeyword.isBlank()) {
+            holder.binding.btnBuyMedicine.visibility = View.GONE
+        } else {
+            holder.binding.btnBuyMedicine.visibility = View.VISIBLE
+            holder.binding.btnBuyMedicine.setOnClickListener {
+                openMarketplaceSearch(disease.searchKeyword)
+            }
+        }
     }
 
     override fun getItemCount(): Int = diseases.size
@@ -56,5 +68,13 @@ class DiseaseAdapter(
         }
 
         dialog.show()
+    }
+
+    private fun openMarketplaceSearch(keyword: String) {
+        val searchUrl = "https://www.tokopedia.com/search?st=product&q=${Uri.encode(keyword)}"
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse(searchUrl)
+        }
+        context.startActivity(intent)
     }
 }

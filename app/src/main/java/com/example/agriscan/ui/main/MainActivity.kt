@@ -1,5 +1,6 @@
 package com.example.agriscan.ui.main
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -10,7 +11,7 @@ import com.example.agriscan.R
 import com.example.agriscan.ui.setting.SettingActivity
 import com.example.agriscan.ui.auth.SignInActivity
 import com.example.agriscan.adapter.MenuAdapter
-import com.example.agriscan.adapter.PlantAdapter
+import com.example.agriscan.adapter.ScanAdapter
 import com.example.agriscan.data.model.MenuItem
 import com.example.agriscan.data.model.PlantItem
 import com.example.agriscan.databinding.ActivityMainBinding
@@ -48,16 +49,16 @@ class MainActivity : AppCompatActivity(), MenuAdapter.OnMenuItemClickListener {
         )
 
         val menuList = listOf(
-            MenuItem("Example", R.drawable.ic_example),
-            MenuItem("History", R.drawable.ic_history),
-            MenuItem("Setting", R.drawable.ic_setting),
-            MenuItem("Sign Out", R.drawable.ic_sign_out)
+            MenuItem("Contoh", R.drawable.ic_example),
+            MenuItem("Riwayat", R.drawable.ic_history),
+            MenuItem("Pengaturan", R.drawable.ic_setting),
+            MenuItem("Keluar", R.drawable.ic_sign_out)
         )
 
-        val adapterPlant = PlantAdapter(this, plantList)
+        val adapterScan = ScanAdapter(this, plantList)
         binding.rvPlant.layoutManager =
             LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
-        binding.rvPlant.adapter = adapterPlant
+        binding.rvPlant.adapter = adapterScan
 
         val adapterMenu = MenuAdapter(menuList, this)
         binding.rvMenu.layoutManager =
@@ -67,23 +68,38 @@ class MainActivity : AppCompatActivity(), MenuAdapter.OnMenuItemClickListener {
 
     override fun onMenuItemClick(menuItem: MenuItem) {
         when (menuItem.name) {
-            "Example" -> startActivity(Intent(this, ExampleActivity::class.java))
-            "History" -> startActivity(Intent(this, HistoryActivity::class.java))
-            "Setting" -> startActivity(Intent(this, SettingActivity::class.java))
-            "Sign Out" -> {
+            "Contoh" -> startActivity(Intent(this, ExampleActivity::class.java))
+            "Riwayat" -> startActivity(Intent(this, HistoryActivity::class.java))
+            "Pengaturan" -> startActivity(Intent(this, SettingActivity::class.java))
+            "Keluar" -> {
+                showSignOutDialog()
+            }
+        }
+    }
+
+    private fun showSignOutDialog() {
+        AlertDialog.Builder(this).apply {
+            setTitle("Keluar")
+            setMessage("Apa anda yakin ingin keluar?")
+            setPositiveButton("Ya") { _, _ ->
                 val sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
                 sharedPreferences.edit().putBoolean("remember_me", false).apply()
 
                 FirebaseAuth.getInstance().signOut()
-                startActivity(Intent(this, SignInActivity::class.java))
+                startActivity(Intent(this@MainActivity, SignInActivity::class.java))
                 finish()
             }
+            setNegativeButton("Batal") { dialog, _ ->
+                dialog.dismiss()
+            }
+            create()
+            show()
         }
     }
 
     private fun setGreetingMessage() {
         val currentUser = auth.currentUser
-        val displayEmail = currentUser?.email ?: "Guest"
+        val displayEmail = currentUser?.email ?: "Tamu"
 
         val greeting = when (Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) {
             in 5..11 -> "Selamat Pagi"

@@ -25,4 +25,15 @@
         android:layout_height="wrap_content"
         android:textSize="14sp"
         android:layout_marginTop="4dp" />
+
+    <Button
+        android:id="@+id/btnBuyMedicine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/beli_obat"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        android:backgroundTint="@color/primary"
+        android:textColor="@android:color/white"/>
+
 </LinearLayout>

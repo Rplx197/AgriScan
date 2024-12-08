@@ -39,4 +39,5 @@
     <string name="delete">Hapus</string>
     <string name="no_history_available">Belum ada history yang disimpan..</string>
     <string name="empty_icon">Empty Icon</string>
+    <string name="beli_obat">Beli Obat</string>
 </resources>

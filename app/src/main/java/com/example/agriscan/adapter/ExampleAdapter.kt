@@ -4,13 +4,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.agriscan.data.model.PlantExampleItem
+import com.example.agriscan.data.model.ExampleItem
 import com.example.agriscan.databinding.ItemPlantExampleBinding
 
-class PlantExampleAdapter(
+class ExampleAdapter(
     private val context: Context,
-    private val plantExamples: List<PlantExampleItem>
-) : RecyclerView.Adapter<PlantExampleAdapter.ViewHolder>() {
+    private val plantExamples: List<ExampleItem>
+) : RecyclerView.Adapter<ExampleAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemPlantExampleBinding) : RecyclerView.ViewHolder(binding.root)
 

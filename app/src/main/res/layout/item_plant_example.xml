@@ -18,12 +18,12 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="4dp" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vpDiseases"
             android:layout_width="match_parent"
-            android:layout_height="250dp" />
+            android:layout_height="300dp" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

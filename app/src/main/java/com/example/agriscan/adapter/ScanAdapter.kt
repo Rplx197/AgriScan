@@ -12,8 +12,8 @@ import com.example.agriscan.data.model.PlantItem
 import com.example.agriscan.ui.scan.ScanActivity
 import com.example.agriscan.databinding.ItemPlantBinding
 
-class PlantAdapter(private val context: Context, private val plantList: List<PlantItem>) :
-    RecyclerView.Adapter<PlantAdapter.PlantViewHolder>() {
+class ScanAdapter(private val context: Context, private val plantList: List<PlantItem>) :
+    RecyclerView.Adapter<ScanAdapter.PlantViewHolder>() {
 
     inner class PlantViewHolder(private val binding: ItemPlantBinding) :
         RecyclerView.ViewHolder(binding.root) {
