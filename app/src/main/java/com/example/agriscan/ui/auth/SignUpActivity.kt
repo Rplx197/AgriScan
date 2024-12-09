@@ -30,19 +30,23 @@ class SignUpActivity : AppCompatActivity() {
 
             if (email.isEmpty()) {
                 binding.etEmail.error = "Email tidak boleh kosong"
+                binding.etEmail.requestFocus()
                 return@setOnClickListener
             }
             if (password.isEmpty()) {
                 binding.etPassword.error = "Password tidak boleh kosong"
+                binding.etPassword.requestFocus()
                 return@setOnClickListener
             }
             if (confirmPassword.isEmpty()) {
                 binding.etConfirmPassword.error = "Confirm Password tidak boleh kosong"
+                binding.etConfirmPassword.requestFocus()
                 return@setOnClickListener
             }
 
             if (password != confirmPassword) {
                 binding.etConfirmPassword.error = "Password tidak sama"
+                binding.etPassword.requestFocus()
                 return@setOnClickListener
             }
 
@@ -58,11 +62,13 @@ class SignUpActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 } else {
-                    if (task.exception?.message?.contains("The email address is already in use") == true) {
-                        Toast.makeText(this, "User sudah terdaftar", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()
+                    val errorMessage = when {
+                        task.exception?.message?.contains("The given password is invalid. [ Password should be at least 6 characters ]") == true -> "Password harus lebih dari 6 karakter"
+                        task.exception?.message?.contains("The email address is already in use by another account.") == true -> "Email sudah terdaftar, silakan gunakan email lain atau masuk ke akun Anda"
+
+                        else -> task.exception.toString()
                     }
+                    Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
                 }
             }
         }

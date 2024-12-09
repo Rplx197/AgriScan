@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.agriscan.adapter.HistoryAdapter
@@ -27,7 +26,6 @@ class HistoryActivity : AppCompatActivity() {
         db = AppDatabase.getInstance(this)
 
         setupRecyclerView()
-        updateIconTintBasedOnTheme()
         loadHistoryData()
     }
 
@@ -40,10 +38,10 @@ class HistoryActivity : AppCompatActivity() {
             val historyList = db.historyDao().getAll()
 
             if (historyList.isEmpty()) {
-                binding.layoutEmptyHistory.visibility = View.VISIBLE
+                binding.tvEmptyHistory.visibility = View.VISIBLE
                 binding.rvHistory.visibility = View.GONE
             } else {
-                binding.layoutEmptyHistory.visibility = View.GONE
+                binding.tvEmptyHistory.visibility = View.GONE
                 binding.rvHistory.visibility = View.VISIBLE
 
                 adapter = HistoryAdapter(historyList) { history ->
@@ -61,14 +59,4 @@ class HistoryActivity : AppCompatActivity() {
             loadHistoryData()
         }
     }
-
-    private fun updateIconTintBasedOnTheme() {
-        val nightModeFlags = resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK
-        val tintColor = when (nightModeFlags) {
-            android.content.res.Configuration.UI_MODE_NIGHT_YES -> ContextCompat.getColor(this, android.R.color.white)
-            else -> ContextCompat.getColor(this, android.R.color.black)
-        }
-        binding.ivEmptyIcon.setColorFilter(tintColor)
-    }
-
 }

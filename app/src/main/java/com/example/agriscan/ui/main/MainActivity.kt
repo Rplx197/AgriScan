@@ -13,7 +13,8 @@ import com.example.agriscan.ui.auth.SignInActivity
 import com.example.agriscan.adapter.MenuAdapter
 import com.example.agriscan.adapter.ScanAdapter
 import com.example.agriscan.data.model.MenuItem
-import com.example.agriscan.data.model.PlantItem
+import com.example.agriscan.data.repository.MenuRepository
+import com.example.agriscan.data.repository.PlantRepository
 import com.example.agriscan.databinding.ActivityMainBinding
 import com.example.agriscan.ui.example.ExampleActivity
 import com.example.agriscan.ui.history.HistoryActivity
@@ -30,6 +31,8 @@ class MainActivity : AppCompatActivity(), MenuAdapter.OnMenuItemClickListener {
         setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
+        val plantRepository = PlantRepository()
+        val menuRepository = MenuRepository()
         val sharedPreferences = getSharedPreferences("theme_prefs", Context.MODE_PRIVATE)
         val isDarkMode = sharedPreferences.getBoolean("isDarkMode", false)
 
@@ -42,18 +45,8 @@ class MainActivity : AppCompatActivity(), MenuAdapter.OnMenuItemClickListener {
 
         setGreetingMessage()
 
-        val plantList = listOf(
-            PlantItem("Tomat", R.drawable.bg_tomato, R.drawable.tomato),
-            PlantItem("Jagung", R.drawable.bg_corn, R.drawable.corn),
-            PlantItem("Kentang", R.drawable.bg_potato, R.drawable.potato)
-        )
-
-        val menuList = listOf(
-            MenuItem("Contoh", R.drawable.ic_example),
-            MenuItem("Riwayat", R.drawable.ic_history),
-            MenuItem("Pengaturan", R.drawable.ic_setting),
-            MenuItem("Keluar", R.drawable.ic_sign_out)
-        )
+        val plantList = plantRepository.getPlants()
+        val menuList = menuRepository.getMenus()
 
         val adapterScan = ScanAdapter(this, plantList)
         binding.rvPlant.layoutManager =
